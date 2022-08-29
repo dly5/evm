@@ -1,5 +1,5 @@
 {
-  "name": "dly5-evm",
+  "name": "evm",
   "version": "0.3.0",
   "description": "An ethereum virtual machine (EVM) bytecode decompiler",
   "main": "lib/EVM.node.js",
