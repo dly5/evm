@@ -98,14 +98,17 @@ export default class EVM {
         return this.opcodes;
     }
 
-    getFunctions(): string[] {
+    getFunctions(): any[] {
         return [
             ...new Set(
                 this.getOpcodes()
                     .filter(opcode => opcode.name === 'PUSH4')
                     .map(opcode => (opcode.pushData ? opcode.pushData.toString('hex') : ''))
                     .filter(hash => hash in functionHashes)
-                    .map(hash => (functionHashes as any)[hash])
+                    .map(hash => ({
+                        signature: (functionHashes as any)[hash],
+                        hash,
+                    }))
             )
         ];
     }
