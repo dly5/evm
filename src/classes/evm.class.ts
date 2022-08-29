@@ -98,19 +98,27 @@ export default class EVM {
         return this.opcodes;
     }
 
-    getFunctions(): any[] {
-        return [
+    getFunctions(): any {
+        const hashes = [
             ...new Set(
                 this.getOpcodes()
                     .filter(opcode => opcode.name === 'PUSH4')
                     .map(opcode => (opcode.pushData ? opcode.pushData.toString('hex') : ''))
-                    .filter(hash => hash in functionHashes)
-                    .map(hash => ({
-                        signature: (functionHashes as any)[hash],
-                        hash,
-                    }))
             )
         ];
+
+        const identified = hashes.filter(
+            hash => hash in functionHashes
+        )
+        const unidentified = hashes.filter(x => !identified.includes(x))
+        
+        return {
+            identified: identified.map(hash => ({
+                signature: (functionHashes as any)[hash],
+                hash,
+            })),
+            unidentified
+        }
     }
 
     getEvents(): string[] {
